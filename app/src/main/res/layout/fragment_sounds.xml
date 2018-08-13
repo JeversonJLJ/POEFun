@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/status_bar"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_height="50dp">
+
+        <ProgressBar
+            android:id="@+id/status_progressBar"
+            style="?android:attr/progressBarStyleSmallInverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/status_text"
+             />
+
+
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Teste"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="27dp" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewSoundsGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/status_bar" />
+
+</RelativeLayout>

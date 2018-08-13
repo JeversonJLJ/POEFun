@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "340322473231",
+    "firebase_url": "https://poefun-73c8e.firebaseio.com",
+    "project_id": "poefun-73c8e",
+    "storage_bucket": "poefun-73c8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340322473231:android:f0ceea3500985d76",
+        "android_client_info": {
+          "package_name": "com.junkersolutions.poefun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340322473231-l20ou11q0nro7l75ca0u8ed6bde7m6b0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.junkersolutions.poefun",
+            "certificate_hash": "a1db938a2d996deaadfe044230319ad3253d93b8"
+          }
+        },
+        {
+          "client_id": "340322473231-ugkcs3s8u76hbonvf7smp8s7v294enm8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNNPKmCQwAIFJBtyYacnANIp-ycLjxtlo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340322473231-ugkcs3s8u76hbonvf7smp8s7v294enm8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

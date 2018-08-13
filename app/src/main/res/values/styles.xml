@@ -1,0 +1,95 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:textViewStyle">@style/TextView</item>
+
+    </style>
+
+    <style name="SnackBar" parent="TextAppearance.Design.Snackbar.Message">
+
+    </style>
+
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:textViewStyle">@style/TextView</item>
+    </style>
+
+    <style name="MaterialDialogSheet" parent="@android:style/Theme.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/MaterialDialogSheetAnimation</item>
+    </style>
+
+    <style name="MaterialDialogSheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_show_bottom_top</item>
+        <item name="android:windowExitAnimation">@anim/popup_hide_top_bottom</item>
+    </style>
+
+    <style name="PreferencesTheme" parent="Theme.AppCompat">
+
+    </style>
+    <style name="PreferenceScreenStyle" >
+
+
+    </style>
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <!-- Used for the buttons -->
+        <!-- Used for the title and text -->
+        <!-- Used for the background -->
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+
+    <style name="TextView">
+        <item name="android:textColor">@color/colorText</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="TabItem" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="DialogMatchParent" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+
+    </style>
+
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+
+    </style>
+
+</resources>
