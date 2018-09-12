@@ -98,7 +98,7 @@ public class SoundsFragment extends Fragment {
         mStatusBar.setVisibility(View.GONE);
 
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        mStatusBarProgressBar= (ProgressBar) rootView.findViewById(R.id.status_progressBar);
+        mStatusBarProgressBar = (ProgressBar) rootView.findViewById(R.id.status_progressBar);
 
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReferenceFromUrl("gs://poefun-73c8e.appspot.com/");
@@ -128,7 +128,6 @@ public class SoundsFragment extends Fragment {
 
         adapter = new SoundsAdapter(this.getActivity(), mlistGroup);
         recyclerView.setAdapter(adapter);
-
 
         return rootView;
     }
@@ -175,8 +174,9 @@ public class SoundsFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         mSearchView = (SearchView) menu.findItem(R.id.action_srv).getActionView();
-        mSearchView.setIconifiedByDefault(false);
+        //mSearchView.setIconifiedByDefault(false);
         mSearchView.setQueryHint(getString(R.string.hint_seach_view_sounds));
+
 
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
@@ -209,10 +209,7 @@ public class SoundsFragment extends Fragment {
                 return false;
             }
         });
-
-
     }
-
 
     private void changeAdapter(final List<SoundGroup> soundGroups) {
         SoundsFragment.this.getActivity().runOnUiThread(new Runnable() {

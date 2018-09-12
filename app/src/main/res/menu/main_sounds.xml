@@ -1,11 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="br.com.teleconsistemas.vendasexternas.Telas.TelaPesquisarCliente">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/action_srv"
         android:title="@string/title_search"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="always"
+        android:windowSoftInputMode="stateAlwaysVisible"
         app:actionViewClass="android.widget.SearchView"/>
 </menu>

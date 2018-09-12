@@ -1,5 +1,6 @@
 package com.junkersolutions.poefun.Activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        MobileAds.initialize(this,"ca-app-pub-3845382773372401~3581948171");
+        MobileAds.initialize(this, "ca-app-pub-3845382773372401~3581948171");
 
         AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest;
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition(), false);
+
             }
 
             @Override
@@ -188,10 +191,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position) {
                 tabLayout.getTabAt(position).select();
-                if(position==2)
-                {
-
-                }
 
             }
 
@@ -260,13 +259,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        inflater= getMenuInflater();
+        inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
 
 
         return true;
     }
-
 
 
     @Override
