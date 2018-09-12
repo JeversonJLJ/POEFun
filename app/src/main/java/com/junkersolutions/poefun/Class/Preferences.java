@@ -71,5 +71,20 @@ public class Preferences {
         properties.Save("account", difficulty);
     }
 
+    public String getNotificationSound() throws Exception {
+        return properties.Read("notification_sound", "");
+    }
+
+    public void setNotificationSound(String notificationSound) throws Exception {
+        properties.Save("notification_sound", notificationSound);
+    }
+
+    public int getNotificationChannelCount() throws Exception {
+        return properties.Read("notification_count", 0);
+    }
+
+    public void setNotificationChannelCount(int notificationCount) throws Exception {
+        properties.Save("notification_count", notificationCount);
+    }
 
 }

@@ -48,6 +48,20 @@
             android:text="@string/text_mnu_set_notification"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
+        <TextView
+            android:id="@+id/tv_notification_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_sounds"
+            android:drawablePadding="18dp"
+            android:gravity="center_vertical"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="15dp"
+            android:text="@string/text_mnu_set_notification_app"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

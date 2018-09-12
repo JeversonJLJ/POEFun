@@ -1,10 +1,12 @@
 package com.junkersolutions.poefun.Class;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
@@ -149,7 +151,7 @@ public class ViewHolderSoundsItem extends ChildViewHolder {
                                     clickedSoundHolder.progressBarRingtone.setVisibility(View.INVISIBLE);
                                     downloadingSound = false;
                                     if (sucess) {
-                                        openBottomSheet(v,clickedSound);
+                                        openBottomSheet(v, clickedSound);
                                         //showPopupMenu(v, clickedSound);
                                     } else {
                                         Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -160,7 +162,7 @@ public class ViewHolderSoundsItem extends ChildViewHolder {
                         }
                     }
                 } else {
-                    openBottomSheet(v,clickedSound);
+                    openBottomSheet(v, clickedSound);
                     //showPopupMenu(v, clickedSound);
                 }
 
@@ -180,6 +182,7 @@ public class ViewHolderSoundsItem extends ChildViewHolder {
         TextView txtAlarm = (TextView) view.findViewById(R.id.tv_alarm);
         TextView txtNotification = (TextView) view.findViewById(R.id.tv_notification);
         TextView txtRingtone = (TextView) view.findViewById(R.id.tv_ringtone);
+        TextView txtNotificationApp = (TextView) view.findViewById(R.id.tv_notification_app);
 
         final android.app.Dialog mBottomSheetDialog = new android.app.Dialog(activity, R.style.MaterialDialogSheet);
         mBottomSheetDialog.setContentView(view);
@@ -190,7 +193,6 @@ public class ViewHolderSoundsItem extends ChildViewHolder {
         mBottomSheetDialog.show();
 
         txtAlarm.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 setRingtone(clickedSound, false, false, true);
@@ -200,7 +202,6 @@ public class ViewHolderSoundsItem extends ChildViewHolder {
         });
 
         txtNotification.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 setRingtone(clickedSound, false, true, false);
@@ -210,7 +211,6 @@ public class ViewHolderSoundsItem extends ChildViewHolder {
         });
 
         txtRingtone.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 setRingtone(clickedSound, true, false, false);
@@ -220,9 +220,32 @@ public class ViewHolderSoundsItem extends ChildViewHolder {
             }
         });
 
+        txtNotificationApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Preferences preferences = new Preferences(activity);
+                    preferences.setNotificationSound(clickedSound.getSoundUri().toString());
+                    preferences.setNotificationChannelCount(preferences.getNotificationChannelCount()+1);
+                    Useful.createNotificationChannel(activity);
+                    Dialog.showDialogMessage(activity, activity.getString(R.string.sound_successful_set_notification_app), new Dialog.OnClickOkDialogMessage() {
+                        @Override
+                        public void onClickOkDialogMessage() {
+                            if (interstitialAd.isLoaded())
+                                interstitialAd.show();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mBottomSheetDialog.dismiss();
+                loadInterstitialAd();
+            }
+        });
+
     }
 
-    private void loadInterstitialAd(){
+    private void loadInterstitialAd() {
         if (BuildConfig.DEBUG) {
             adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         } else {

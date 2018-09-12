@@ -3,9 +3,12 @@ package com.junkersolutions.poefun.Class;
 import android.*;
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioAttributes;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -24,12 +27,14 @@ import com.junkersolutions.poefun.*;
 import com.junkersolutions.poefun.Activity.MainActivity;
 import com.junkersolutions.poefun.Dialog.Dialog;
 import com.junkersolutions.poefun.Fragments.SoundsFragment;
+import com.junkersolutions.poefun.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -179,15 +184,15 @@ public class Useful {
         try {
             for (Object link : links) {
                 String[] split = link.toString().split("\\.");
-                if (split[split.length-1].equalsIgnoreCase("bmp")) {
+                if (split[split.length - 1].equalsIgnoreCase("bmp")) {
                     imageLinks.add(link.toString());
-                } else if (split[split.length-1].equalsIgnoreCase("gif")) {
+                } else if (split[split.length - 1].equalsIgnoreCase("gif")) {
                     imageLinks.add(link.toString());
-                } else if (split[split.length-1].equalsIgnoreCase("jpg")) {
+                } else if (split[split.length - 1].equalsIgnoreCase("jpg")) {
                     imageLinks.add(link.toString());
-                } else if (split[split.length-1].equalsIgnoreCase("png")) {
+                } else if (split[split.length - 1].equalsIgnoreCase("png")) {
                     imageLinks.add(link.toString());
-                } else if (split[split.length-1].equalsIgnoreCase("webp")) {
+                } else if (split[split.length - 1].equalsIgnoreCase("webp")) {
                     imageLinks.add(link.toString());
                 }
             }
@@ -268,4 +273,42 @@ public class Useful {
             e2.printStackTrace();
         }
     }
+
+
+    public static void createNotificationChannel(Context context) {
+
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                NotificationManager mNotificationManager =
+                        (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+
+                List<NotificationChannel> channelList = mNotificationManager.getNotificationChannels();
+                for (int i = 0; channelList != null && i < channelList.size(); i++) {
+                    mNotificationManager.deleteNotificationChannel(channelList.get(i).getId());
+                }
+
+                Preferences preferences = new Preferences(context);
+                NotificationChannel channel = new NotificationChannel("poe_fun_news_"+preferences.getNotificationChannelCount() , context.getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
+                channel.setDescription(context.getString(R.string.channel_description));
+                channel.enableLights(true);
+                channel.enableVibration(true);
+
+                if (!preferences.getNotificationSound().isEmpty()) {
+                    AudioAttributes att = new AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                            .build();
+                    channel.setSound(Uri.parse(preferences.getNotificationSound()), att);
+                }
+                // Register the channel with the system; you can't change the importance
+                // or other notification behaviors after this
+                mNotificationManager.createNotificationChannel(channel);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
+
+

@@ -16,4 +16,9 @@
         android:title="@string/text_mnu_set_notification"
         />
 
+    <item
+        android:id="@+id/set_notification_app"
+        android:title="@string/text_mnu_set_notification_app"
+        />
+
 </menu>

@@ -1,10 +1,14 @@
 package com.junkersolutions.poefun.Service;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -19,12 +23,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.junkersolutions.poefun.Activity.MainActivity;
 import com.junkersolutions.poefun.Adapters.RecyclerAdapterNews;
 import com.junkersolutions.poefun.Class.Preferences;
+import com.junkersolutions.poefun.Class.Useful;
 import com.junkersolutions.poefun.R;
 
 import org.mcsoxford.rss.RSSFeed;
 import org.mcsoxford.rss.RSSItem;
 import org.mcsoxford.rss.RSSReader;
 
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 
 
@@ -64,6 +71,7 @@ public class ServiceNews extends Service {
         final boolean[] threadStarted = {false};
         final String[] url = {""};
 
+        Useful.createNotificationChannel(context);
         final Thread service = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -77,21 +85,39 @@ public class ServiceNews extends Service {
 
                         if (!feed.getItems().get(0).getTitle().equalsIgnoreCase(preferencias.getLastNews())) {
                             preferencias.setLastNews(feed.getItems().get(0).getTitle());
-                            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, String.valueOf(lastID))
-                                    .setSmallIcon(R.drawable.ic_notification)
-                                    .setColor(getResources().getColor(R.color.colorAccent))
-                                    .setContentTitle(feed.getItems().get(0).getTitle())
-                                    .setContentText(Html.fromHtml(feed.getItems().get(0).getDescription()).toString())
-                                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                            NotificationCompat.Builder mBuilder;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                                mBuilder = new NotificationCompat.Builder(context, "poe_fun_news_" + preferencias.getNotificationChannelCount());
+                            else
+                                mBuilder = new NotificationCompat.Builder(context, String.valueOf(lastID));
+
+
+                            mBuilder.setSmallIcon(R.drawable.ic_notification);
+                            mBuilder.setColor(getResources().getColor(R.color.colorAccent));
+                            mBuilder.setContentTitle(feed.getItems().get(0).getTitle());
+                            mBuilder.setContentText(Html.fromHtml(feed.getItems().get(0).getDescription()).toString());
+
+                            Preferences preferences = new Preferences(context);
+                            File soundFile = new File(preferences.getNotificationSound());
+                            //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+                            if (soundFile != null)
+                                mBuilder.setSound(Uri.parse(preferences.getNotificationSound()));
+                            else
+                                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+
+
+                            mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
                             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
                             Intent intent = new Intent(context, MainActivity.class);//CUSTOM ACTIVITY HERE
                             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                             mBuilder.setContentIntent(contentIntent);
                             mBuilder.setAutoCancel(true);
+
                             notificationManager.notify(lastID, mBuilder.build());
                             lastID++;
+
                         }
 
                         Thread.sleep(60000);

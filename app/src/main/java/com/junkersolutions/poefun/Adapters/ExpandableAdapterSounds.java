@@ -26,6 +26,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.junkersolutions.poefun.BuildConfig;
+import com.junkersolutions.poefun.Class.Preferences;
 import com.junkersolutions.poefun.Dialog.Dialog;
 import com.junkersolutions.poefun.Entities.SoundGroup;
 import com.junkersolutions.poefun.R;
@@ -340,6 +341,20 @@ public class ExpandableAdapterSounds extends BaseExpandableListAdapter {
                     setRingtone(clickedSound, false, false, true);
                 } else if (id == R.id.set_notification) {
                     setRingtone(clickedSound, false, true, false);
+                } else if (id == R.id.set_notification_app) {
+                    try {
+                        Preferences preferences = new Preferences(activity);
+                        preferences.setNotificationSound(clickedSound.getSoundUri().toString());
+                        Dialog.showDialogMessage(activity, activity.getString(R.string.sound_successful_set_notification_app), new Dialog.OnClickOkDialogMessage() {
+                            @Override
+                            public void onClickOkDialogMessage() {
+                                if (interstitialAd.isLoaded())
+                                    interstitialAd.show();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 return true;

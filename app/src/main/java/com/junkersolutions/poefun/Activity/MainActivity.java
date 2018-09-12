@@ -188,6 +188,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position) {
                 tabLayout.getTabAt(position).select();
+                if(position==2)
+                {
+
+                }
 
             }
 

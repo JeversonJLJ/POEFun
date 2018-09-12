@@ -33,6 +33,10 @@ public final class Properties {
 		return preferences.getString(name,defaultValue);
 	}
 
+	public int Read(String name, int defaultValue) {
+
+		return preferences.getInt(name,defaultValue);
+	}
 
 	public void Save(String name, String value) {
 		synchronized (this)
@@ -46,6 +50,14 @@ public final class Properties {
 		synchronized (this)
 		{
 			preferences.edit().putBoolean(name, value).commit();
+		}
+
+	}
+
+	public void Save(String name, int value) {
+		synchronized (this)
+		{
+			preferences.edit().putInt(name, value).commit();
 		}
 
 	}

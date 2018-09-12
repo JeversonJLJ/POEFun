@@ -12,6 +12,7 @@
     <string name="text_mnu_set_ringtone">Set Ringtone</string>
     <string name="text_mnu_set_alarm">Set Alarm</string>
     <string name="text_mnu_set_notification">Set Notification</string>
+    <string name="text_mnu_set_notification_app">Set Notification for this app</string>
     <string name="sounds">Sounds</string>
     <string name="email">Email</string>
     <string name="subject_email">Hi, I\'m using the PoE Fun app</string>
@@ -40,4 +41,7 @@
     <string name="filter">Filter</string>
     <string name="hint_seach_view_sounds">Name of group or sound</string>
     <string name="settings_cat_show_finished_events_title">Show finished events</string>
+    <string name="channel_name">Poe Fun News</string>
+    <string name="channel_description">Show the Poe news</string>
+    <string name="sound_successful_set_notification_app">Sound successful set as notification for this app!</string>
 </resources>
