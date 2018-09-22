@@ -304,6 +304,11 @@ public class MainActivity extends AppCompatActivity
 
             }
         }
+        else if (id == R.id.nav_privacy_policy) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://poefun-73c8e.firebaseapp.com/index.html"));
+            startActivity(intent);
+        }
 
         return true;
     }

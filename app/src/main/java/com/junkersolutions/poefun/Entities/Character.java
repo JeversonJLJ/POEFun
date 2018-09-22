@@ -15,6 +15,9 @@ public class Character {
     @SerializedName("experience")
     private String experience;
 
+    @SerializedName("depth")
+    private Depth depth;
+
     public String getName() {
         return name;
     }
@@ -45,5 +48,13 @@ public class Character {
 
     public void setExperience(String experience) {
         this.experience = experience;
+    }
+
+    public Depth getDepth() {
+        return depth;
+    }
+
+    public void setDepth(Depth depth) {
+        this.depth = depth;
     }
 }

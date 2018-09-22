@@ -17,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.Switch;
 
 import com.junkersolutions.poefun.Class.Preferences;
-import com.junkersolutions.poefun.Entities.Leaderboards;
 import com.junkersolutions.poefun.Entities.Leagues;
 import com.junkersolutions.poefun.Fragments.LeaderboardsFragment;
 import com.junkersolutions.poefun.R;
@@ -58,7 +57,7 @@ public class DialogFilter extends AppCompatDialog {
         setContentView(R.layout.dialog_filter);
         LeaderboardsFragment.updateLeagues(this.getContext());
         mButtonOK = findViewById(R.id.buttonOKFilter);
-        mButtonCancel = findViewById(R.id.buttonCancelFilter);
+        mButtonCancel = findViewById(R.id.buttonCancelSort);
         mProgressBar = findViewById(R.id.progressBar);
         mSwitchLab = findViewById(R.id.switchLabyrinth);
         mSwitchAccount = findViewById(R.id.switchAccount);

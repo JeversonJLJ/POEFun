@@ -87,4 +87,12 @@ public class Preferences {
         properties.Save("notification_count", notificationCount);
     }
 
+    public String getSort() throws Exception {
+        return properties.Read("sort", "");
+    }
+
+    public void setSort(String sort) throws Exception {
+        properties.Save("sort", sort);
+    }
+
 }

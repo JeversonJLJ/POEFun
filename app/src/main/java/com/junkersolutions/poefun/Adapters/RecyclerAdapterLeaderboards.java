@@ -35,7 +35,6 @@ import java.util.List;
 public class RecyclerAdapterLeaderboards extends RecyclerView.Adapter<RecyclerAdapterLeaderboards.ViewHolder> {
 
 
-
     private final static int LAB_VIEW = 0;
     private final static int LEAGUE_VIEW = 1;
     private final static int ACCOUNT_VIEW = 2;
@@ -55,6 +54,10 @@ public class RecyclerAdapterLeaderboards extends RecyclerView.Adapter<RecyclerAd
         public TextView mTextViewCharacter;
         public TextView mTextViewLevel;
         public TextView mTextViewClass;
+        public TextView mTextViewDepthLevel;
+        public TextView mTextViewDepthSoloLevel;
+        public TextView mTextViewDepth;
+        public TextView mTextViewDepthSolo;
         public TextView mTextViewTime;
         public ImageButton mImageButtonTwitch;
         public ImageButton mImageButtonCharacterDead;
@@ -77,6 +80,11 @@ public class RecyclerAdapterLeaderboards extends RecyclerView.Adapter<RecyclerAd
             mTextViewCharacter = v.findViewById(R.id.textViewCharacter);
             mTextViewLevel = v.findViewById(R.id.textViewLevel);
             mTextViewClass = v.findViewById(R.id.textViewClass);
+            mTextViewDepthLevel = v.findViewById(R.id.textViewDepthLevel);
+            mTextViewDepthSoloLevel = v.findViewById(R.id.textViewDepthSoloLevel);
+            mTextViewDepth = v.findViewById(R.id.textViewDepth);
+            mTextViewDepthSolo = v.findViewById(R.id.textViewDepthSolo);
+
             mTextViewLevelChallenges = v.findViewById(R.id.textViewChallenges);
             mTextViewTime = v.findViewById(R.id.textViewTime);
             mImageButtonOnline = v.findViewById(R.id.imageButtonOnline);
@@ -106,9 +114,6 @@ public class RecyclerAdapterLeaderboards extends RecyclerView.Adapter<RecyclerAd
                 break;
             case LOADING_MORE_VIEW:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_rank_loading_more, parent, false);
-                break;
-            case ACCOUNT_VIEW:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_rank_account, parent, false);
                 break;
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_rank_league, parent, false);
@@ -167,6 +172,21 @@ public class RecyclerAdapterLeaderboards extends RecyclerView.Adapter<RecyclerAd
                     holder.mTextViewTime.setText(Useful.convertLabTime(leaderboards.getTime()));
 
                 holder.mTextViewClass.setText(leaderboards.getCharacter().getClas());
+
+                if (viewType != LAB_VIEW) {
+                    if (leaderboards.getCharacter().getDepth() != null) {
+                        if (!leaderboards.getCharacter().getDepth().getDefault().isEmpty())
+                            holder.mTextViewDepthLevel.setText(leaderboards.getCharacter().getDepth().getDefault());
+                        if (!leaderboards.getCharacter().getDepth().getSolo().isEmpty())
+                            holder.mTextViewDepthSoloLevel.setText(leaderboards.getCharacter().getDepth().getSolo());
+                    } else {
+                        holder.mTextViewDepth.setVisibility(View.GONE);
+                        holder.mTextViewDepthLevel.setVisibility(View.GONE);
+                        holder.mTextViewDepthSolo.setVisibility(View.GONE);
+                        holder.mTextViewDepthSoloLevel.setVisibility(View.GONE);
+                    }
+                }
+
 
 
                 if (viewType != LAB_VIEW) {

@@ -17,6 +17,34 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/textViewDepthSoloLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="0"
+            app:layout_constraintEnd_toEndOf="@+id/textViewDepthSolo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDepthSolo" />
+
+        <TextView
+            android:id="@+id/textViewDepthLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="0"
+            app:layout_constraintEnd_toEndOf="@+id/textViewDepth"
+            app:layout_constraintStart_toStartOf="@+id/textViewDepth"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDepth" />
+
+        <TextView
             android:id="@+id/textViewRank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,9 +62,34 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="@string/account"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDepthSoloLevel" />
+
+        <TextView
+            android:id="@+id/textViewDepthSolo"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/depthSolo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRank" />
+
+        <TextView
+            android:id="@+id/textViewDepth"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/depth"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            app:layout_constraintStart_toEndOf="@+id/textViewDepthSolo"
             app:layout_constraintTop_toBottomOf="@+id/textViewRank" />
 
         <TextView
@@ -89,7 +142,7 @@
             android:layout_height="0dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_online"
-            app:layout_constraintBottom_toTopOf="@+id/textViewAccountCaption"
+            app:layout_constraintBottom_toTopOf="@+id/textViewDepthSolo"
             app:layout_constraintStart_toEndOf="@+id/textViewRank"
             app:layout_constraintTop_toTopOf="@+id/textViewRank" />
 
@@ -216,7 +269,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:background="@android:color/transparent"
-            app:layout_constraintBottom_toTopOf="@+id/textViewAccountCaption"
+            app:layout_constraintBottom_toTopOf="@+id/textViewDepth"
             app:layout_constraintStart_toEndOf="@+id/imageButtonOnline"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_twitch" />

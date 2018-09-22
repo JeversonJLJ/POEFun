@@ -14,7 +14,7 @@
     <string name="text_mnu_set_notification">Set Notification</string>
     <string name="text_mnu_set_notification_app">Set Notification for this app</string>
     <string name="sounds">Sounds</string>
-    <string name="email">Email</string>
+    <string name="email">Send us an email</string>
     <string name="subject_email">Hi, I\'m using the PoE Fun app</string>
     <string name="tab_news_text">News</string>
     <string name="tab_sounds_text">Sounds</string>
@@ -44,4 +44,8 @@
     <string name="channel_name">Poe Fun News</string>
     <string name="channel_description">Show the Poe news</string>
     <string name="sound_successful_set_notification_app">Sound successful set as notification for this app!</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="depthSolo">Depth Solo</string>
+    <string name="depth">Depth</string>
+    <string name="sort">Sort</string>
 </resources>

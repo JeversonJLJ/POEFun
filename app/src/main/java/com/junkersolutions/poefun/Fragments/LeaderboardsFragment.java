@@ -1,11 +1,12 @@
 package com.junkersolutions.poefun.Fragments;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -51,6 +56,7 @@ public class LeaderboardsFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
     private TextView mTexViewFilter;
+    private TextView mTexViewSort;
     private TextView mTexViewFilterLeague;
     private TextView mTexViewFilterLabyrinthAccount;
     private String mUrlLeaderboards;
@@ -88,6 +94,7 @@ public class LeaderboardsFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         mTexViewFilter = mRootView.findViewById(R.id.textViewFilter);
+        mTexViewSort= mRootView.findViewById(R.id.textViewSort);
         mTexViewFilterLeague = mRootView.findViewById(R.id.textViewFilterLeague);
         mTexViewFilterLabyrinthAccount = mRootView.findViewById(R.id.textViewFilterLabyrinthAccount);
 
@@ -220,10 +227,12 @@ public class LeaderboardsFragment extends Fragment {
         Preferences preferences = new Preferences(this.getContext());
         try {
             mTexViewFilter.setText(preferences.getLeague());
+            mTexViewSort.setText(preferences.getSort());
             mTexViewFilterLeague.setText(preferences.getLeague());
 
             if (preferences.isLabyrinth() || preferences.isByAccountName()) {
                 mTexViewFilter.setVisibility(View.GONE);
+                mTexViewSort.setVisibility(View.GONE);
                 mTexViewFilterLeague.setVisibility(View.VISIBLE);
                 if (preferences.isLabyrinth())
                     mTexViewFilterLabyrinthAccount.setText("Labyrinth: " + preferences.getDifficulty());
@@ -232,6 +241,7 @@ public class LeaderboardsFragment extends Fragment {
                 mTexViewFilterLabyrinthAccount.setVisibility(View.VISIBLE);
             } else {
                 mTexViewFilter.setVisibility(View.VISIBLE);
+                mTexViewSort.setVisibility(View.VISIBLE);
                 mTexViewFilterLeague.setVisibility(View.GONE);
                 mTexViewFilterLabyrinthAccount.setVisibility(View.GONE);
             }
@@ -297,20 +307,24 @@ public class LeaderboardsFragment extends Fragment {
                         urlLeaderboardsFinal += "&";
                     mLastFinalLaddersURL = urlLeaderboardsFinal;
                     urlLeaderboardsFinal += "offset=0&limit=" + QUANTITY_ITEMS_PER_SEARCH;
+
+                    if (!preferences.isByAccountName() && !preferences.isLabyrinth() &&!preferences.getSort().isEmpty() && !preferences.getSort().equalsIgnoreCase("League") )
+                        urlLeaderboardsFinal += "&sort=" + preferences.getSort().replace(" ","").toLowerCase();
+
                     urlLeaderboardsFinal = urlLeaderboardsFinal.replace(" ", "%20");
                     JSONObject jsonObject = new JSONObject(NetworkUtils.getJSONFromAPI(urlLeaderboardsFinal));
                     mLeaderboards = gson.fromJson(jsonObject.getString("entries"), new TypeToken<List<Leaderboards>>() {
                     }.getType());
                     if (urlLeaderboardsFinal.contains("accountName") && mLeaderboards.size() > 0) {
                         List<Leaderboards> Leaderboards = new ArrayList<Leaderboards>();
-                        for (Leaderboards item: mLeaderboards) {
+                        for (Leaderboards item : mLeaderboards) {
                             List<Leaderboards> tempLeaderboards;
                             urlLeaderboardsFinal = mUrlLeaderboards + preferences.getLeague() + "?offset=" + (item.getRank() - 1) + "&limit=1";
                             urlLeaderboardsFinal = urlLeaderboardsFinal.replace(" ", "%20");
                             jsonObject = new JSONObject(NetworkUtils.getJSONFromAPI(urlLeaderboardsFinal));
                             tempLeaderboards = gson.fromJson(jsonObject.getString("entries"), new TypeToken<List<Leaderboards>>() {
                             }.getType());
-                            for (Leaderboards tempItem:tempLeaderboards)
+                            for (Leaderboards tempItem : tempLeaderboards)
                                 Leaderboards.add(tempItem);
                         }
                         mLeaderboards = Leaderboards;
@@ -386,6 +400,32 @@ public class LeaderboardsFragment extends Fragment {
                     updateFilterText();
                 }
             });
+
+        } else if (id == R.id.action_sort) {
+            String sort[] = {"League", "Depth Solo", "Depth"};
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+            LayoutInflater inflater = getLayoutInflater();
+            View convertView = (View) inflater.inflate(R.layout.dialog_sort, null);
+            alertDialog.setView(convertView);
+            alertDialog.setTitle("Sort");
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1, sort);
+            alertDialog.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Preferences preferences = new Preferences(getContext());
+                    try {
+                        preferences.setSort(adapter.getItem(which));
+                        updateLeaderboards();
+                        updateFilterText();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    updateLeaderboards();
+                    updateFilterText();
+                }
+            });
+            alertDialog.show();
+
 
         }
         return super.onOptionsItemSelected(item);
