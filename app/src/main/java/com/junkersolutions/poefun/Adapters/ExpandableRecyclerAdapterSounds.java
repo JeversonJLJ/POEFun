@@ -25,20 +25,18 @@ import java.util.List;
  * Created by jever on 30/11/2017.
  */
 
-public class SoundsAdapter extends ExpandableRecyclerAdapter<SoundGroup, Sound, ViewHolderSoundsGroup, ViewHolderSoundsItem> {
+public class ExpandableRecyclerAdapterSounds extends ExpandableRecyclerAdapter<SoundGroup, Sound, ViewHolderSoundsGroup, ViewHolderSoundsItem> {
 
 
     private static final int PARENT = 0;
-   // private static final int PARENT_NORMAL = 1;
     private static final int CHILD = 1;
-    //private static final int CHILD_NORMAL = 3;
 
 
     private List<SoundGroup> list;
     private Activity activity;
     private LayoutInflater mInflater;
 
-    public SoundsAdapter(Activity activity, @NonNull List<SoundGroup> list) {
+    public ExpandableRecyclerAdapterSounds(Activity activity, @NonNull List<SoundGroup> list) {
         super(list);
         this.list = list;
         this.activity = activity;
@@ -68,7 +66,7 @@ public class SoundsAdapter extends ExpandableRecyclerAdapter<SoundGroup, Sound, 
         final SoundGroup groupItem = list.get(position);
 
         holder.sounds = groupItem.getSoundItemList();
-        holder.name.setText(groupItem.getGroupTitle());
+        holder.name.setText(groupItem.getGroupName());
         holder.imageView.setImageURI(null);
         holder.imageView.setImageURI(groupItem.getSoundItemList().get(0).getImageUri());
         holder.btnExpand.setTag(holder);
@@ -86,14 +84,14 @@ public class SoundsAdapter extends ExpandableRecyclerAdapter<SoundGroup, Sound, 
 
     @UiThread
     @Override
-    public void onBindParentViewHolder(@NonNull ViewHolderSoundsGroup recipeViewHolder, int parentPosition, @NonNull SoundGroup soundGroup) {
-        recipeViewHolder.bind(soundGroup);
+    public void onBindParentViewHolder(@NonNull ViewHolderSoundsGroup groupViewHolder, int parentPosition, @NonNull SoundGroup soundGroup) {
+        groupViewHolder.bind(soundGroup);
     }
 
     @UiThread
     @Override
-    public void onBindChildViewHolder(@NonNull ViewHolderSoundsItem ingredientViewHolder, int parentPosition, int childPosition, @NonNull Sound sound) {
-        ingredientViewHolder.bind(sound);
+    public void onBindChildViewHolder(@NonNull ViewHolderSoundsItem childViewHolder, int parentPosition, int childPosition, @NonNull Sound sound) {
+        childViewHolder.bind(sound);
     }
 
     @Override

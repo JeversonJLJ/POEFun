@@ -9,6 +9,7 @@ android {
         versionCode 7
         versionName "1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -23,24 +24,25 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.google.code.gson:gson:2.8.0'
-    implementation 'com.android.support:appcompat-v7:27.+'
-    implementation 'com.android.support:preference-v7:27.+'
-    implementation 'com.android.support:design:27.+'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:cardview-v7:27.+'
-    implementation 'com.android.support:recyclerview-v7:27.+'
-    implementation 'com.android.support:transition:27.+'
-    implementation 'com.google.android.gms:play-services-ads:11.+'
-    implementation 'com.google.firebase:firebase-auth:11.+'
-    implementation 'com.google.firebase:firebase-database:11.+'
-    implementation 'com.google.firebase:firebase-firestore:11.+'
-    implementation 'com.google.firebase:firebase-storage:11.+'
-    implementation 'com.google.firebase:firebase-messaging:11.+'
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:preference-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:transition:27.1.1'
+    implementation 'com.google.android.gms:play-services-ads:17.0.0'
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.google.firebase:firebase-database:16.0.3'
+    implementation 'com.google.firebase:firebase-firestore:17.1.1'
+    implementation 'com.google.firebase:firebase-storage:16.0.3'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     testImplementation 'junit:junit:4.12'
     implementation project(path: ':expandablerecyclerview')
     implementation project(path: ':rssparser')
+    implementation 'com.android.support:multidex:1.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

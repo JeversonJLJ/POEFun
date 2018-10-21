@@ -90,7 +90,7 @@ public class ExpandableAdapterSounds extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this.soundList.get(this.soundGroupList.get(groupPosition).getGroupTitle())
+        return this.soundList.get(this.soundGroupList.get(groupPosition).getGroupName())
                 .get(childPosititon);
 
     }
@@ -102,7 +102,7 @@ public class ExpandableAdapterSounds extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.soundList.get(this.soundGroupList.get(groupPosition).getGroupTitle())
+        return this.soundList.get(this.soundGroupList.get(groupPosition).getGroupName())
                 .size();
     }
 
@@ -136,7 +136,7 @@ public class ExpandableAdapterSounds extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         SoundGroup soundGroup = (SoundGroup) getGroup(groupPosition);
-        String headerTitle = soundGroup.getGroupTitle();
+        String headerTitle = soundGroup.getGroupName();
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.activity
                     .getSystemService(activity.LAYOUT_INFLATER_SERVICE);

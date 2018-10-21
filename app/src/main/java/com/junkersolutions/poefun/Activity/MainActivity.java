@@ -45,11 +45,14 @@ import com.junkersolutions.poefun.Adapters.ViewPagerAdapter;
 import com.junkersolutions.poefun.BuildConfig;
 import com.junkersolutions.poefun.Class.Useful;
 import com.junkersolutions.poefun.Dialog.Dialog;
+import com.junkersolutions.poefun.Fragments.BulkItemExchangeFragment;
 import com.junkersolutions.poefun.Fragments.LeaderboardsFragment;
 import com.junkersolutions.poefun.Fragments.NewsFragment;
 import com.junkersolutions.poefun.Fragments.SoundsFragment;
 import com.junkersolutions.poefun.R;
 import com.junkersolutions.poefun.Service.ServiceNews;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.mcsoxford.rss.RSSFeed;
 import org.mcsoxford.rss.RSSReader;
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity
     LeaderboardsFragment leaderboardsFragment;
     NewsFragment newsFragment;
     SoundsFragment soundsFragment;
+    BulkItemExchangeFragment bulkItemExchangeFragment;
 
 
     @Override
@@ -105,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        MobileAds.initialize(this, "ca-app-pub-3845382773372401~3581948171");
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
 
         AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest;
@@ -199,7 +203,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
 
     }
 
@@ -239,9 +243,11 @@ public class MainActivity extends AppCompatActivity
         leaderboardsFragment = new LeaderboardsFragment();
         newsFragment = new NewsFragment();
         soundsFragment = new SoundsFragment();
+        bulkItemExchangeFragment = new BulkItemExchangeFragment();
         adapter.addFragment(newsFragment, "News");
         adapter.addFragment(leaderboardsFragment, "Leaderboards");
         adapter.addFragment(soundsFragment, "Sounds");
+        adapter.addFragment(bulkItemExchangeFragment, "Currency");
         viewPager.setAdapter(adapter);
     }
 

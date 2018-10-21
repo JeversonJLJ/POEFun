@@ -10,28 +10,28 @@ import java.util.List;
  */
 
 public class SoundGroup implements Parent<Sound>, Cloneable {
-    private String groupTitle;
+    private String groupName;
     private String groupImage;
     private boolean newGroupSound;
     private List<Sound> soundItemList;
     private boolean expanded = false;
 
 
-    public SoundGroup(String groupTitle, boolean newGroupSound) {
-        this.groupTitle = groupTitle;
+    public SoundGroup(String groupName, boolean newGroupSound) {
+        this.groupName = groupName;
         this.newGroupSound = newGroupSound;
         this.groupImage = "";
     }
 
-    public SoundGroup(String groupTitle, List<Sound> soundItemList, String groupImage, boolean newGroupSound) {
-        this.groupTitle = groupTitle;
+    public SoundGroup(String groupName, List<Sound> soundItemList, String groupImage, boolean newGroupSound) {
+        this.groupName = groupName;
         this.newGroupSound = newGroupSound;
         this.soundItemList = soundItemList;
         this.groupImage = groupImage;
     }
 
-    public SoundGroup(String groupTitle, String groupImage, boolean newGroupSound) {
-        this.groupTitle = groupTitle;
+    public SoundGroup(String groupName, String groupImage, boolean newGroupSound) {
+        this.groupName = groupName;
         this.newGroupSound = newGroupSound;
         this.groupImage = groupImage;
     }
@@ -62,12 +62,12 @@ public class SoundGroup implements Parent<Sound>, Cloneable {
     }
 
 
-    public String getGroupTitle() {
-        return groupTitle;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroupTitle(String groupTitle) {
-        this.groupTitle = groupTitle;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public boolean isNewGroupSound() {

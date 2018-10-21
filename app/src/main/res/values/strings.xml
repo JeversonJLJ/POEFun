@@ -48,4 +48,12 @@
     <string name="depthSolo">Depth Solo</string>
     <string name="depth">Depth</string>
     <string name="sort">Sort</string>
+    <string name="tab_bulk_item_exchange_text">Currency</string>
+    <string name="select_league">Select League</string>
+    <string name="what_you_have">What You Have?</string>
+    <string name="what_you_want">What You Want?</string>
+    <string name="currency_image">Currency Image</string>
+    <string name="click_to_select_what_you_want">Click here to select what you want!</string>
+    <string name="click_to_select_what_you_have">Click here to select what you have!</string>
+    <string name="admob_app_id">ca-app-pub-3845382773372401~3581948171</string>
 </resources>

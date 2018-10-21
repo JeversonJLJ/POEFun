@@ -1,7 +1,5 @@
 package com.junkersolutions.poefun.Class;
 
-import android.*;
-import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -23,10 +21,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
-import com.junkersolutions.poefun.*;
-import com.junkersolutions.poefun.Activity.MainActivity;
 import com.junkersolutions.poefun.Dialog.Dialog;
-import com.junkersolutions.poefun.Fragments.SoundsFragment;
 import com.junkersolutions.poefun.R;
 
 import java.io.File;
@@ -159,7 +154,7 @@ public class Useful {
         return false;
     }
 
-    public static ArrayList pullLinks(String text) {
+    /*public static ArrayList pullLinks(String text) {
         ArrayList links = new ArrayList();
         try {
             String regex = "\\(?\\b(https?://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";
@@ -201,7 +196,7 @@ public class Useful {
         }
         return imageLinks;
     }
-
+    */
     public static String convertLabTime(String time) {
 
         int totalSeconds = Integer.parseInt(time);

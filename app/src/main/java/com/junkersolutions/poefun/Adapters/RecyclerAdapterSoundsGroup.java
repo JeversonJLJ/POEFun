@@ -49,7 +49,7 @@ public class RecyclerAdapterSoundsGroup extends RecyclerView.Adapter<ViewHolderS
         final SoundGroup groupItem = list.get(position);
 
        /* holder.sounds = groupItem.getSoundItemList();
-        holder.name.setText(groupItem.getGroupTitle());
+        holder.name.setText(groupItem.getGroupName());
         holder.imageView.setImageURI(null);
         holder.imageView.setImageURI(groupItem.getSoundItemList().get(0).getImageUri());
         holder.btnExpand.setTag(holder);

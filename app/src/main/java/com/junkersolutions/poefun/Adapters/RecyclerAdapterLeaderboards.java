@@ -84,7 +84,6 @@ public class RecyclerAdapterLeaderboards extends RecyclerView.Adapter<RecyclerAd
             mTextViewDepthSoloLevel = v.findViewById(R.id.textViewDepthSoloLevel);
             mTextViewDepth = v.findViewById(R.id.textViewDepth);
             mTextViewDepthSolo = v.findViewById(R.id.textViewDepthSolo);
-
             mTextViewLevelChallenges = v.findViewById(R.id.textViewChallenges);
             mTextViewTime = v.findViewById(R.id.textViewTime);
             mImageButtonOnline = v.findViewById(R.id.imageButtonOnline);

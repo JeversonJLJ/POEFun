@@ -3,10 +3,7 @@ package com.junkersolutions.poefun.Fragments;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
-import android.support.transition.AutoTransition;
-import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +28,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.junkersolutions.poefun.Adapters.SoundsAdapter;
+import com.junkersolutions.poefun.Adapters.ExpandableRecyclerAdapterSounds;
 import com.junkersolutions.poefun.Entities.SoundGroup;
 import com.junkersolutions.poefun.R;
 import com.junkersolutions.poefun.Entities.Sound;
@@ -42,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.google.android.gms.internal.zzahn.runOnUiThread;
 import static com.junkersolutions.poefun.Class.Useful.APP_STORAGE_PATCH;
 
 /**
@@ -52,7 +48,7 @@ import static com.junkersolutions.poefun.Class.Useful.APP_STORAGE_PATCH;
 public class SoundsFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private SoundsAdapter adapter;
+    private ExpandableRecyclerAdapterSounds adapter;
     private ProgressBar mProgressBar;
     private ProgressBar mStatusBarProgressBar;
     private FirebaseStorage mStorage;
@@ -126,7 +122,7 @@ public class SoundsFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.recyclerViewSoundsGroup);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        adapter = new SoundsAdapter(this.getActivity(), mlistGroup);
+        adapter = new ExpandableRecyclerAdapterSounds(this.getActivity(), mlistGroup);
         recyclerView.setAdapter(adapter);
 
         return rootView;
@@ -148,7 +144,7 @@ public class SoundsFragment extends Fragment {
                 Iterator<Sound> i = soundGroup.getSoundItemList().iterator();
                 while (i.hasNext()) {
                     Sound sound = i.next();
-                    if (!sound.getSoundTitle().toLowerCase().contains(imput.toLowerCase()) && !soundGroup.getGroupTitle().toLowerCase().contains(imput.toLowerCase()))
+                    if (!sound.getSoundTitle().toLowerCase().contains(imput.toLowerCase()) && !soundGroup.getGroupName().toLowerCase().contains(imput.toLowerCase()))
                         i.remove();
                 }
             }
@@ -216,7 +212,7 @@ public class SoundsFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    adapter = new SoundsAdapter(SoundsFragment.this.getActivity(), soundGroups);
+                    adapter = new ExpandableRecyclerAdapterSounds(SoundsFragment.this.getActivity(), soundGroups);
                     recyclerView.setAdapter(adapter);
                     mProgressBar.setVisibility(View.GONE);
                 } catch (Exception e) {
@@ -245,7 +241,7 @@ public class SoundsFragment extends Fragment {
 
     private List<Sound> searchSoundsInGroup(String groupDescription) {
         for (SoundGroup itemGroup : mlistGroup) {
-            if (itemGroup.getGroupTitle().equals(groupDescription))
+            if (itemGroup.getGroupName().equals(groupDescription))
                 return itemGroup.getSoundItemList();
 
         }
@@ -254,7 +250,7 @@ public class SoundsFragment extends Fragment {
 
     private void setSoundsInGroup(String groupDescription, List<Sound> sounds) {
         for (SoundGroup itemGroup : mlistGroup) {
-            if (itemGroup.getGroupTitle().equals(groupDescription)) {
+            if (itemGroup.getGroupName().equals(groupDescription)) {
                 itemGroup.setSoundItemList(sounds);
                 return;
             }
@@ -275,7 +271,7 @@ public class SoundsFragment extends Fragment {
             }
         }
         for (SoundGroup groupName : mlistGroup) {
-            sounds = searchSoundsInGroup(groupName.getGroupTitle());
+            sounds = searchSoundsInGroup(groupName.getGroupName());
             if (sounds != null) {
                 if (sounds.size() == 0) {
                     mlistGroup.remove(groupName);
@@ -291,7 +287,7 @@ public class SoundsFragment extends Fragment {
             boolean existsGroup = false;
 
             for (SoundGroup groupName : mlistGroup) {
-                if (groupName.getGroupTitle().equalsIgnoreCase(dataSnapshot.child("GroupDescription").getValue(String.class))) {
+                if (groupName.getGroupName().equalsIgnoreCase(dataSnapshot.child("GroupDescription").getValue(String.class))) {
                     existsGroup = true;
                     if (Boolean.parseBoolean(dataSnapshot.child("newGroupSound").getValue(String.class)))
                         groupName.setNewGroupSound(true);
@@ -420,7 +416,7 @@ public class SoundsFragment extends Fragment {
                         try {
                             for (DataSnapshot child : snapshot.getChildren()) {
                                 addSound(child);
-                                runOnUiThread(new Runnable() {
+                                getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         mStatusUpdate.setText("Loading sounds, Groups:" + mlistGroup.size() + " Sounds:" + mSoundCount);
@@ -429,7 +425,7 @@ public class SoundsFragment extends Fragment {
                             }
                             dataBase.keepSynced(true);
                             Thread.sleep(1000);
-                            runOnUiThread(new Runnable() {
+                            getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
@@ -460,7 +456,7 @@ public class SoundsFragment extends Fragment {
     }
 
     private void showHideStatusBar(final boolean show) {
-        runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (show) {

@@ -7,19 +7,12 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
-import com.junkersolutions.poefun.Adapters.RecyclerAdapterSoundsItem;
 import com.junkersolutions.poefun.Entities.Sound;
 import com.junkersolutions.poefun.Entities.SoundGroup;
 import com.junkersolutions.poefun.R;
@@ -55,7 +48,7 @@ public class ViewHolderSoundsGroup extends ParentViewHolder {
 
     public void bind(@NonNull SoundGroup soundGroup) {
         sounds = soundGroup.getSoundItemList();
-        name.setText(soundGroup.getGroupTitle());
+        name.setText(soundGroup.getGroupName());
         imageViewGroup.setImageURI(null);
         imageViewGroup.setImageURI(soundGroup.getSoundItemList().get(soundGroup.getSoundItemList().size() - 1).getImageUri());
 

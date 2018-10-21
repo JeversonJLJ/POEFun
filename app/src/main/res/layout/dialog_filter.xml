@@ -64,7 +64,7 @@
     </RadioGroup>
 
     <android.support.v7.widget.AppCompatSpinner
-        android:id="@+id/spinnerLeague"
+        android:id="@+id/spinner_league"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -131,7 +131,7 @@
         android:text="Account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerLeague" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_league" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textImputLayoutAccount"

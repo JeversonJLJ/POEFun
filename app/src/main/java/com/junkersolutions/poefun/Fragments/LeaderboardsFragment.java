@@ -313,6 +313,7 @@ public class LeaderboardsFragment extends Fragment {
 
                     urlLeaderboardsFinal = urlLeaderboardsFinal.replace(" ", "%20");
                     JSONObject jsonObject = new JSONObject(NetworkUtils.getJSONFromAPI(urlLeaderboardsFinal));
+
                     mLeaderboards = gson.fromJson(jsonObject.getString("entries"), new TypeToken<List<Leaderboards>>() {
                     }.getType());
                     if (urlLeaderboardsFinal.contains("accountName") && mLeaderboards.size() > 0) {

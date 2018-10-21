@@ -67,7 +67,7 @@ public class DialogFilter extends AppCompatDialog {
         mRadioButtonMerciless = findViewById(R.id.radioButtonMerciless);
         mRadioButtonEternal = findViewById(R.id.radioButtonEternal);
 
-        mSpinnerLeagues = findViewById(R.id.spinnerLeague);
+        mSpinnerLeagues = findViewById(R.id.spinner_league);
 
         mTextInputEditText= findViewById(R.id.textImputLayoutEditTextAccount);
         mTextImputLayout = findViewById(R.id.textImputLayoutAccount);
@@ -212,14 +212,14 @@ public class DialogFilter extends AppCompatDialog {
         }
     }
 
-    public void loadedLeagues() {
+    public void loadLeagues() {
         List<String> listLeagues = new ArrayList<String>();
 
         for (Leagues leagueItem : LeaderboardsFragment.Leagues)
             listLeagues.add(leagueItem.getId());
 
         mSpinnerArrayAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, listLeagues);
-        mSpinnerLeagues = findViewById(R.id.spinnerLeague);
+        mSpinnerLeagues = findViewById(R.id.spinner_league);
         mSpinnerLeagues.setAdapter(mSpinnerArrayAdapter);
         loading(false);
     }
@@ -258,7 +258,7 @@ public class DialogFilter extends AppCompatDialog {
         }
 
         protected void onPostExecute(Long result) {
-            loadedLeagues();
+            loadLeagues();
         }
     }
 
