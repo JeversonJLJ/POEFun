@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.junkersolutions.poefun.BuildConfig;
 import com.junkersolutions.poefun.Class.Useful;
 import com.junkersolutions.poefun.R;
 
@@ -28,13 +29,19 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         Handler handle = new Handler();
 
-        handle.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showMainActivity();
-                finish();
-            }
-        }, 3000);
+        if (!BuildConfig.DEBUG){
+            handle.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showMainActivity();
+                    finish();
+                }
+            }, 3000);
+        }else{
+            showMainActivity();
+            finish();
+        }
+
 
     }
 

@@ -56,4 +56,15 @@
     <string name="click_to_select_what_you_want">Click here to select what you want!</string>
     <string name="click_to_select_what_you_have">Click here to select what you have!</string>
     <string name="admob_app_id">ca-app-pub-3845382773372401~3581948171</string>
+    <string name="is_worth">Is Worth</string>
+    <string name="stock">Stock:</string>
+    <string name="contact">Contact</string>
+    <string name="no_items_found">No items found!</string>
+    <string name="search">Search</string>
+    <string name="online">Online</string>
+    <string name="clear">Clear</string>
+    <string name="cleared">Cleared!</string>
+    <string name="share">Share</string>
+    <string name="close">Close</string>
+    <string name="copied_successful">Copied Successful!</string>
 </resources>

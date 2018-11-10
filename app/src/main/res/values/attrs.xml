@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="imageDescription">Image Description</attr>
+    <attr name="imageDescriptionVisible">false</attr>
+    <attr name="imageVisible">true</attr>
+</resources>

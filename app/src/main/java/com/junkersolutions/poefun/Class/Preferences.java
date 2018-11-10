@@ -39,6 +39,14 @@ public class Preferences {
         properties.Save("league", league);
     }
 
+    public String getBulkItemExchangeLeague() throws Exception {
+        return properties.Read("bulkItemExchangeleague", "Standard");
+    }
+
+    public void setBulkItemExchangeLeague(String league) throws Exception {
+        properties.Save("bulkItemExchangeleague", league);
+    }
+
     public boolean isLabyrinth() throws Exception {
         return properties.Read("labyrinth", false);
     }

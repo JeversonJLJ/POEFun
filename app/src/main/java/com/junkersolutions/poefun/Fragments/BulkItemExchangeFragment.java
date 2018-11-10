@@ -4,7 +4,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.transition.AutoTransition;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,19 +26,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.junkersolutions.poefun.Adapters.ExpandableRecyclerAdapterCurrency;
+import com.junkersolutions.poefun.Adapters.RecyclerAdapterBulkItemExchange;
 import com.junkersolutions.poefun.Adapters.RecyclerAdapterSelectedCurrency;
+import com.junkersolutions.poefun.Class.Preferences;
+import com.junkersolutions.poefun.Dialog.Dialog;
 import com.junkersolutions.poefun.Dialog.DialogSelectCurrency;
 import com.junkersolutions.poefun.Entities.Currency;
 import com.junkersolutions.poefun.Entities.CurrencyGroup;
 import com.junkersolutions.poefun.Entities.Leagues;
 import com.junkersolutions.poefun.R;
+import com.junkersolutions.poefun.WebService.PoEWebService;
+import com.junkersolutions.poefun.WebService.WebServiceEntitiesReturn.Result;
+import com.junkersolutions.poefun.WebService.WebServiceEntitiesReturn.ResultItems;
+import com.junkersolutions.poefun.WebService.WebServiceEntitiesReturn.ResultSearch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BulkItemExchangeFragment extends Fragment {
 
+    public final static int QUANTITY_ITEMS_PER_SEARCH = 10;
     private View mRootView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView.LayoutManager mLayoutManagerWhatYouHave;
@@ -43,11 +56,26 @@ public class BulkItemExchangeFragment extends Fragment {
     private RecyclerView.Adapter mAdapterWhatYouWant;
     private List<CurrencyGroup> mListGroupCurrencyWhatYouWant;
     private List<CurrencyGroup> mListGroupCurrencyWhatYouHave;
+    private RecyclerView mRecyclerViewBulkItemExchange;
+    private RecyclerView.LayoutManager mLayoutManagerBulkItemExchange;
+    private RecyclerView.Adapter mAdapterBulkItemExchange;
     public static List<CurrencyGroup> mListGroupCurrency;
     private ArrayAdapter<String> mSpinnerArrayAdapter;
     private Spinner mSpinnerLeagues;
     private RecyclerAdapterSelectedCurrency.OnClickItemListener onClickItemListenerWhatYouWant;
     private RecyclerAdapterSelectedCurrency.OnClickItemListener onClickItemListenerWhatYouHave;
+    private Button mButtonSearch;
+    private List<Result> mBulkItemExchangeList;
+    private ResultSearch mResultSearch;
+    private RecyclerAdapterBulkItemExchange.OnLoadingMore onLoadingMore;
+    private Switch mSwitch;
+    private ConstraintLayout mConstraintLayoutFilter;
+    private ConstraintLayout mConstraintLayoutArrow;
+    private ViewGroup mRoot;
+    private ImageView mImageViewArrow;
+
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +94,39 @@ public class BulkItemExchangeFragment extends Fragment {
 
         mSwipeRefreshLayout = mRootView.findViewById(R.id.tab_bulk_item_exchange_swipe_refresh_layout);
         mSpinnerLeagues = mRootView.findViewById(R.id.spinner_league);
+
+
+        mButtonSearch = mRootView.findViewById(R.id.buttonSearch);
+
+        mSwitch = mRootView.findViewById(R.id.switchOnline);
+        mSwitch.setChecked(true);
+
+        mConstraintLayoutFilter = mRootView.findViewById(R.id.constraintLayoutFilter);
+        mConstraintLayoutArrow = mRootView.findViewById(R.id.constraintLayoutArrow);
+        mConstraintLayoutArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mConstraintLayoutFilter.getVisibility() == View.VISIBLE)
+                    showSearch(false);
+                else
+                    showSearch(true);
+            }
+        });
+        mRoot = mRootView.findViewById(R.id.constraintLayoutRoot);
+
+
+        mImageViewArrow = mRootView.findViewById(R.id.imageView);
+
+        mImageViewArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mConstraintLayoutFilter.getVisibility() == View.VISIBLE)
+                    showSearch(false);
+                else
+                    showSearch(true);
+            }
+        });
+
 
         mLayoutManagerWhatYouHave = new LinearLayoutManager(mRootView.getContext());
         ((LinearLayoutManager) mLayoutManagerWhatYouHave).setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -140,21 +201,32 @@ public class BulkItemExchangeFragment extends Fragment {
         mRecyclerViewWhatYouWant.setAdapter(mAdapterWhatYouWant);
 
 
-       /* ConstraintLayout constraintLayout = mRootView.findViewById(R.id.filter);
-        constraintLayout.setOnClickListener(new View.OnClickListener() {
+        mBulkItemExchangeList = new ArrayList<Result>();
+        mRecyclerViewBulkItemExchange = mRootView.findViewById(R.id.recycler_view_bulk_item_exchange);
+        mLayoutManagerBulkItemExchange = new LinearLayoutManager(mRootView.getContext());
+        mRecyclerViewBulkItemExchange.setLayoutManager(mLayoutManagerBulkItemExchange);
+        mAdapterBulkItemExchange = new RecyclerAdapterBulkItemExchange(getActivity(), mBulkItemExchangeList);
+        mRecyclerViewBulkItemExchange.setAdapter(mAdapterBulkItemExchange);
+
+        mButtonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogSelectCurrency.ShowCurrency(getActivity(), getString(R.string.what_you_have), mListGroupCurrencyWhatYouWant, new DialogSelectCurrency.OnSelectedCurrency() {
-                    @Override
-                    public void onSelectedCurrency(List<Currency> currencyList) {
-                        mAdapterWhatYouHave = new RecyclerAdapterSelectedCurrency(getActivity(), currencyList);
-                        mRecyclerViewWhatYouHave.setAdapter(mAdapterWhatYouHave);
-                    }
-                });
+                Preferences preferences = new Preferences(getContext());
+                try {
+                    preferences.setBulkItemExchangeLeague(mSpinnerLeagues.getSelectedItem().toString());
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                search();
             }
         });
-        */
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                search();
+            }
+        });
 
         new Thread(new Runnable() {
             @Override
@@ -171,13 +243,158 @@ public class BulkItemExchangeFragment extends Fragment {
         new LoadingData().execute(true);
         loading(true);
 
+        loadingMore();
+
         return mRootView;
     }
 
+    private void loadingMore() {
+        onLoadingMore = new RecyclerAdapterBulkItemExchange.OnLoadingMore() {
+            @Override
+            public void onLoadingMore() {
+                searchItems();
+            }
+        };
+    }
 
-    private void loading(boolean loading) {
-        mRootView.setEnabled(loading);
-        mSwipeRefreshLayout.setRefreshing(loading);
+    private void setLastOptionLeague(){
+        Preferences preferences = new Preferences(getContext());
+        try {
+            mSpinnerLeagues.setSelection(mSpinnerArrayAdapter.getPosition(preferences.getBulkItemExchangeLeague()));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void search() {
+        showSearch(false);
+        loading(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mBulkItemExchangeList.clear();
+                    mBulkItemExchangeList.add(new Result());
+                    List<String> have, want;
+                    have = new ArrayList<String>();
+                    want = new ArrayList<String>();
+
+                    for (CurrencyGroup currencyGroup : mListGroupCurrencyWhatYouHave) {
+                        for (Currency currency : currencyGroup.getCurrencyList()) {
+                            if (currency.isSelected())
+                                have.add(currency.getId());
+                        }
+
+                    }
+
+                    for (CurrencyGroup currencyGroup : mListGroupCurrencyWhatYouWant) {
+                        for (Currency currency : currencyGroup.getCurrencyList()) {
+                            if (currency.isSelected())
+                                want.add(currency.getId());
+                        }
+
+                    }
+
+
+                    new PoEWebService().getBulkExchangeSearch(getContext(), mSpinnerLeagues.getSelectedItem().toString(), have, want, mSwitch.isChecked() ? "online" : "any", new PoEWebService.OnGetBulkExchangeSearch() {
+                        @Override
+                        public void onGetBulkExchangeSearch(ResultSearch resultSearch) {
+                            mResultSearch = resultSearch;
+                            if (mResultSearch.getResult().size() == 0) {
+                                Dialog.showDialogMessage(getActivity(), getString(R.string.no_items_found));
+                                loading(false);
+                                return;
+                            }
+                            searchItems();
+                        }
+
+                        @Override
+                        public void onGetBulkExchangeSearchError(Exception e) {
+                            loading(false);
+                            Dialog.showDialogMessage(getActivity(), e.getMessage());
+                        }
+                    });
+                } catch (final Exception e) {
+                    loading(false);
+                    Dialog.showDialogMessage(getActivity(), e.getMessage());
+                }
+            }
+        }).start();
+    }
+
+    private void searchItems() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<String> items = new ArrayList<String>();
+                    if (mResultSearch.getResult().size() < QUANTITY_ITEMS_PER_SEARCH) {
+                        for (int i = 0; i < mResultSearch.getResult().size(); i++)
+                            items.add(mResultSearch.getResult().get(i));
+
+                        for (int i = 0; i < mResultSearch.getResult().size(); i++)
+                            mResultSearch.getResult().remove(0);
+
+                    } else {
+                        for (int i = 0; i < QUANTITY_ITEMS_PER_SEARCH; i++)
+                            items.add(mResultSearch.getResult().get(i));
+
+                        for (int i = 0; i < QUANTITY_ITEMS_PER_SEARCH; i++)
+                            mResultSearch.getResult().remove(0);
+
+                    }
+
+                    new PoEWebService().getBulkExchangeItem(getContext(), items, mResultSearch.getId(), new PoEWebService.OnGetBulkExchangeItem() {
+                        @Override
+                        public void onGetBulkExchangeItem(final ResultItems resultItems) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (mBulkItemExchangeList.size() == 1 && mBulkItemExchangeList.get(0).getListing() == null) {
+                                        mBulkItemExchangeList = resultItems.getResult();
+                                        mAdapterBulkItemExchange = new RecyclerAdapterBulkItemExchange(getActivity(), mBulkItemExchangeList, onLoadingMore);
+                                        mRecyclerViewBulkItemExchange.setAdapter(mAdapterBulkItemExchange);
+                                    } else {
+                                        final int lastPosition = mBulkItemExchangeList.size();
+                                        mBulkItemExchangeList.remove(mBulkItemExchangeList.size() - 1);
+                                        mBulkItemExchangeList.addAll(resultItems.getResult());
+                                        if (mBulkItemExchangeList.size() < mResultSearch.getTotal())
+                                            mBulkItemExchangeList.add(new Result());
+                                        mAdapterBulkItemExchange.notifyItemRangeChanged(lastPosition, resultItems.getResult().size());
+                                    }
+                                    loading(false);
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onGetBulkExchangeItemError(Exception e) {
+                            loading(false);
+                            Dialog.showDialogMessage(getActivity(), e.getMessage());
+                        }
+                    });
+
+                } catch (final Exception e) {
+                    loading(false);
+                    Dialog.showDialogMessage(getActivity(), e.getMessage());
+                }
+            }
+        }).start();
+    }
+
+
+
+
+    private void loading(final boolean loading) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mButtonSearch.setEnabled(!loading);
+                mSwipeRefreshLayout.setRefreshing(loading);
+            }
+        });
+        // mRootView.setEnabled(loading);
+
     }
 
     private List<Currency> searchCurrencyInGroup(String groupDescription) {
@@ -251,6 +468,7 @@ public class BulkItemExchangeFragment extends Fragment {
         mSpinnerArrayAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, listLeagues);
         mSpinnerLeagues = mRootView.findViewById(R.id.spinner_league);
         mSpinnerLeagues.setAdapter(mSpinnerArrayAdapter);
+        setLastOptionLeague();
         loading(false);
     }
 
@@ -268,13 +486,7 @@ public class BulkItemExchangeFragment extends Fragment {
                             mListGroupCurrency = new ArrayList<CurrencyGroup>();
                             for (DataSnapshot child : snapshot.getChildren()) {
                                 addCurrency(child);
-                                /*runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mStatusUpdate.setText("Loading sounds, Groups:" + mlistGroup.size() + " Sounds:" + mSoundCount);
-                                    }
-                                });
-                                */
+
                             }
 
                             for (CurrencyGroup currencyGroup : mListGroupCurrency) {
@@ -282,29 +494,8 @@ public class BulkItemExchangeFragment extends Fragment {
                                 mListGroupCurrencyWhatYouWant.add(currencyGroup.getClone());
                             }
 
-
                             dataBase.keepSynced(true);
-                            Thread.sleep(1000);
-                            /*runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
 
-                                        //mAdapterWhatYouHave = new RecyclerAdapterSelectedCurrency(BulkItemExchangeFragment.this.getActivity(), mListCurrency);
-                                        //mAdapterWhatYouWant = new RecyclerAdapterSelectedCurrency(BulkItemExchangeFragment.this.getActivity(), mListCurrency);
-                                        //mRecyclerViewWhatYouHave.setAdapter(mAdapterWhatYouHave);
-                                        //mRecyclerViewWhatYouWant.setAdapter(mAdapterWhatYouWant);
-                                        //mRecyclerViewWhatYouHave.notifyAll();
-                                        //mRecyclerViewWhatYouWant.notifyAll();
-                                        // updateAdapter();
-                                        //showHideStatusBar(false);
-
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                            */
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -316,6 +507,22 @@ public class BulkItemExchangeFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    private void showSearch(final boolean show) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TransitionManager.beginDelayedTransition(mRoot, new AutoTransition());
+                if (show) {
+                    mConstraintLayoutFilter.setVisibility(View.VISIBLE);
+                    mImageViewArrow.setImageDrawable(ContextCompat.getDrawable(getContext(), android.R.drawable.arrow_up_float));
+                } else {
+                    mConstraintLayoutFilter.setVisibility(View.GONE);
+                    mImageViewArrow.setImageDrawable(ContextCompat.getDrawable(getContext(), android.R.drawable.arrow_down_float));
+                }
             }
         });
     }
@@ -346,6 +553,26 @@ public class BulkItemExchangeFragment extends Fragment {
         protected void onPostExecute(Long result) {
             loadLeagues();
         }
+    }
+
+    public static String searchCurrencyImage(String currencyId) {
+        for (CurrencyGroup currencyGroup : BulkItemExchangeFragment.mListGroupCurrency) {
+            for (Currency currency : currencyGroup.getCurrencyList()) {
+                if (currency.getId().equalsIgnoreCase(currencyId))
+                    return currency.getImageURL();
+            }
+        }
+        return "";
+    }
+
+    public static String searchCurrencyDescription(String currencyId) {
+        for (CurrencyGroup currencyGroup : BulkItemExchangeFragment.mListGroupCurrency) {
+            for (Currency currency : currencyGroup.getCurrencyList()) {
+                if (currency.getId().equalsIgnoreCase(currencyId))
+                    return currency.getDescription();
+            }
+        }
+        return "";
     }
 
 }

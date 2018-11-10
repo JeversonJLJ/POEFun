@@ -25,17 +25,30 @@ public class Dialog {
         void onClickOkDialogMessage();
     }
 
-    public static void showDialogMessage(Activity activity,String message, final OnClickOkDialogMessage dialogMessage ) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity ,R.style.AlertDialogStyle);
-        builder.setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton(activity.getString(R.string.ok_message_dialog), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialogMessage.onClickOkDialogMessage();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+
+    public static void showDialogMessage(Activity activity, String message) {
+        showDialogMessage(activity, message, null);
+
+    }
+
+    public static void showDialogMessage(final Activity activity, final String message, final OnClickOkDialogMessage dialogMessage) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AlertDialogStyle);
+                builder.setMessage(message)
+                        .setCancelable(false)
+                        .setPositiveButton(activity.getString(R.string.ok_message_dialog), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                if (dialogMessage != null)
+                                    dialogMessage.onClickOkDialogMessage();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
 
     }
 

@@ -11,8 +11,7 @@
     android:layout_marginEnd="4dp"
     android:layout_marginRight="4dp"
     android:layout_marginBottom="8dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardElevation="0dp">
+    android:foreground="?android:attr/selectableItemBackground">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

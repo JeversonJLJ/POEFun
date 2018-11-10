@@ -270,8 +270,7 @@ public class LeaderboardsFragment extends Fragment {
                             }.getType());
                             final int lastPosition = mLeaderboards.size();
                             mLeaderboards.remove(mLeaderboards.size() - 1);
-                            for (Leaderboards newItem : newLeaderboards)
-                                mLeaderboards.add(newItem);
+                            mLeaderboards.addAll(newLeaderboards);
                             mLeaderboards.add(new Leaderboards());
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {

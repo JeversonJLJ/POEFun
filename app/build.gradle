@@ -43,6 +43,7 @@ dependencies {
     implementation project(path: ':expandablerecyclerview')
     implementation project(path: ':rssparser')
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.volley:volley:1.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

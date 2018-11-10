@@ -7,7 +7,7 @@
 
 
     <Button
-        android:id="@+id/buttonOK"
+        android:id="@+id/buttonCopy"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:text="@android:string/ok" />
 
     <Button
-        android:id="@+id/buttonCancel"
+        android:id="@+id/buttonClose"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,6 +32,23 @@
         android:layout_marginBottom="8dp"
         android:text="@android:string/cancel" />
 
+    <Button
+        android:id="@+id/buttonClear"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toStartOf="@+id/buttonCopy"
+        android:layout_toLeftOf="@+id/buttonCopy"
+        android:layout_toEndOf="@+id/buttonClose"
+        android:layout_toRightOf="@+id/buttonClose"
+        android:text="@string/clear" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewCurrency"
         android:layout_width="match_parent"
@@ -42,7 +59,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/buttonOK"
+        android:layout_above="@id/buttonCopy"
         android:layout_marginBottom="8dp">
 
 

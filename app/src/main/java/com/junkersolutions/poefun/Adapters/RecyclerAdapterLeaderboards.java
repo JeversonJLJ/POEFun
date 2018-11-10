@@ -12,19 +12,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.junkersolutions.poefun.Class.NetworkUtils;
 import com.junkersolutions.poefun.Class.Preferences;
 import com.junkersolutions.poefun.Class.Useful;
-import com.junkersolutions.poefun.Dialog.DialogFilter;
 import com.junkersolutions.poefun.Entities.Leaderboards;
 import com.junkersolutions.poefun.Fragments.LeaderboardsFragment;
 import com.junkersolutions.poefun.R;
-import com.squareup.okhttp.internal.Util;
-
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -112,7 +104,7 @@ public class RecyclerAdapterLeaderboards extends RecyclerView.Adapter<RecyclerAd
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_rank_lab, parent, false);
                 break;
             case LOADING_MORE_VIEW:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_rank_loading_more, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_loading_more, parent, false);
                 break;
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_rank_league, parent, false);

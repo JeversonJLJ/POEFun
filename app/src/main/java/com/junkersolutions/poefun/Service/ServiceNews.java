@@ -1,7 +1,5 @@
 package com.junkersolutions.poefun.Service;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -13,26 +11,18 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.text.Html;
-import android.widget.Toast;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.junkersolutions.poefun.Activity.MainActivity;
-import com.junkersolutions.poefun.Adapters.RecyclerAdapterNews;
 import com.junkersolutions.poefun.Class.Preferences;
 import com.junkersolutions.poefun.Class.Useful;
 import com.junkersolutions.poefun.R;
-
 import org.mcsoxford.rss.RSSFeed;
-import org.mcsoxford.rss.RSSItem;
 import org.mcsoxford.rss.RSSReader;
-
 import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
 
 
 public class ServiceNews extends Service {
@@ -70,6 +60,8 @@ public class ServiceNews extends Service {
         final Context context = this;
         final boolean[] threadStarted = {false};
         final String[] url = {""};
+
+
 
         Useful.createNotificationChannel(context);
         final Thread service = new Thread(new Runnable() {
