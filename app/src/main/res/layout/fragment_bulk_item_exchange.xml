@@ -91,7 +91,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="@string/what_you_want"
-                        app:layout_constraintBottom_toBottomOf="@+id/card_view_what_you_want"
+                        app:layout_constraintBottom_toTopOf="@+id/imageButtonChange"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/card_view_spinner" />
 
@@ -106,7 +106,7 @@
                         android:text="@string/what_you_have"
                         app:layout_constraintBottom_toTopOf="@+id/buttonSearch"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/card_view_what_you_want" />
+                        app:layout_constraintTop_toBottomOf="@+id/imageButtonChange" />
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/card_view_what_you_have"
@@ -174,6 +174,23 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/card_view_what_you_have" />
+
+                    <ImageButton
+                        android:id="@+id/imageButtonChange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@android:color/transparent"
+                        app:layout_constraintBottom_toTopOf="@+id/buttonSearch"
+                        app:layout_constraintEnd_toStartOf="@+id/card_view_what_you_want"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/card_view_spinner"
+                        app:srcCompat="@drawable/ic_change" />
 
                 </android.support.constraint.ConstraintLayout>
             </android.support.constraint.ConstraintLayout>

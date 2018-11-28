@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -73,8 +74,7 @@ public class BulkItemExchangeFragment extends Fragment {
     private ConstraintLayout mConstraintLayoutArrow;
     private ViewGroup mRoot;
     private ImageView mImageViewArrow;
-
-
+    private ImageButton mImageButtonChange;
 
 
     @Override
@@ -127,6 +127,27 @@ public class BulkItemExchangeFragment extends Fragment {
             }
         });
 
+        mImageButtonChange  = mRootView.findViewById(R.id.imageButtonChange);
+        mImageButtonChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<CurrencyGroup> listGroupCurrencyWhatYouHaveTemp = new ArrayList<CurrencyGroup>();
+                for (CurrencyGroup currencyGroup:mListGroupCurrencyWhatYouHave) {
+                    listGroupCurrencyWhatYouHaveTemp.add(currencyGroup.getClone());
+                }
+                mListGroupCurrencyWhatYouHave.clear();
+                for (CurrencyGroup currencyGroup:mListGroupCurrencyWhatYouWant) {
+                    mListGroupCurrencyWhatYouHave.add(currencyGroup.getClone());
+                }
+                mListGroupCurrencyWhatYouWant = listGroupCurrencyWhatYouHaveTemp;
+
+                setAdapterWhatYouHave(mListGroupCurrencyWhatYouHave);
+                setAdapterWhatYouWant(mListGroupCurrencyWhatYouWant);
+                mBulkItemExchangeList.clear();
+                mAdapterBulkItemExchange.notifyDataSetChanged();
+            }
+        });
+
 
         mLayoutManagerWhatYouHave = new LinearLayoutManager(mRootView.getContext());
         ((LinearLayoutManager) mLayoutManagerWhatYouHave).setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -152,18 +173,7 @@ public class BulkItemExchangeFragment extends Fragment {
                 DialogSelectCurrency.ShowCurrency(getActivity(), getString(R.string.what_you_have), mListGroupCurrencyWhatYouHave, new DialogSelectCurrency.OnSelectedCurrency() {
                     @Override
                     public void onSelectedCurrency(List<CurrencyGroup> currencyGroupsList) {
-                        List<Currency> currencyList = new ArrayList<Currency>();
-                        for (CurrencyGroup currencyGroup : currencyGroupsList)
-                            for (Currency currencyItem : currencyGroup.getCurrencyList())
-                                if (currencyItem.isSelected())
-                                    currencyList.add(currencyItem.getClone());
-
-                        if (currencyList.size() <= 0) {
-                            currencyList.add(new Currency(getString(R.string.click_to_select_what_you_have), "", "", ""));
-                        }
-
-                        mAdapterWhatYouHave = new RecyclerAdapterSelectedCurrency(getActivity(), currencyList, onClickItemListenerWhatYouHave);
-                        mRecyclerViewWhatYouHave.setAdapter(mAdapterWhatYouHave);
+                        setAdapterWhatYouHave(currencyGroupsList);
                     }
                 });
             }
@@ -176,18 +186,7 @@ public class BulkItemExchangeFragment extends Fragment {
                 DialogSelectCurrency.ShowCurrency(getActivity(), getString(R.string.what_you_want), mListGroupCurrencyWhatYouWant, new DialogSelectCurrency.OnSelectedCurrency() {
                     @Override
                     public void onSelectedCurrency(List<CurrencyGroup> currencyGroupsList) {
-                        List<Currency> currencyList = new ArrayList<Currency>();
-                        for (CurrencyGroup currencyGroup : currencyGroupsList)
-                            for (Currency currencyItem : currencyGroup.getCurrencyList())
-                                if (currencyItem.isSelected())
-                                    currencyList.add(currencyItem.getClone());
-
-                        if (currencyList.size() <= 0) {
-                            currencyList.add(new Currency(getString(R.string.click_to_select_what_you_want), "", "", ""));
-                        }
-
-                        mAdapterWhatYouWant = new RecyclerAdapterSelectedCurrency(getActivity(), currencyList, onClickItemListenerWhatYouWant);
-                        mRecyclerViewWhatYouWant.setAdapter(mAdapterWhatYouWant);
+                        setAdapterWhatYouWant(currencyGroupsList);
                     }
                 });
             }
@@ -214,7 +213,7 @@ public class BulkItemExchangeFragment extends Fragment {
                 Preferences preferences = new Preferences(getContext());
                 try {
                     preferences.setBulkItemExchangeLeague(mSpinnerLeagues.getSelectedItem().toString());
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 search();
@@ -248,6 +247,36 @@ public class BulkItemExchangeFragment extends Fragment {
         return mRootView;
     }
 
+    private void setAdapterWhatYouHave(List<CurrencyGroup> currencyGroupsList){
+        List<Currency> currencyList = new ArrayList<Currency>();
+        for (CurrencyGroup currencyGroup : currencyGroupsList)
+            for (Currency currencyItem : currencyGroup.getCurrencyList())
+                if (currencyItem.isSelected())
+                    currencyList.add(currencyItem.getClone());
+
+        if (currencyList.size() <= 0) {
+            currencyList.add(new Currency(getString(R.string.click_to_select_what_you_have), "", "", ""));
+        }
+
+        mAdapterWhatYouHave = new RecyclerAdapterSelectedCurrency(getActivity(), currencyList, onClickItemListenerWhatYouHave);
+        mRecyclerViewWhatYouHave.setAdapter(mAdapterWhatYouHave);
+    }
+
+    private void setAdapterWhatYouWant(List<CurrencyGroup> currencyGroupsList){
+        List<Currency> currencyList = new ArrayList<Currency>();
+        for (CurrencyGroup currencyGroup : currencyGroupsList)
+            for (Currency currencyItem : currencyGroup.getCurrencyList())
+                if (currencyItem.isSelected())
+                    currencyList.add(currencyItem.getClone());
+
+        if (currencyList.size() <= 0) {
+            currencyList.add(new Currency(getString(R.string.click_to_select_what_you_want), "", "", ""));
+        }
+
+        mAdapterWhatYouWant = new RecyclerAdapterSelectedCurrency(getActivity(), currencyList, onClickItemListenerWhatYouWant);
+        mRecyclerViewWhatYouWant.setAdapter(mAdapterWhatYouWant);
+    }
+
     private void loadingMore() {
         onLoadingMore = new RecyclerAdapterBulkItemExchange.OnLoadingMore() {
             @Override
@@ -257,14 +286,15 @@ public class BulkItemExchangeFragment extends Fragment {
         };
     }
 
-    private void setLastOptionLeague(){
+    private void setLastOptionLeague() {
         Preferences preferences = new Preferences(getContext());
         try {
             mSpinnerLeagues.setSelection(mSpinnerArrayAdapter.getPosition(preferences.getBulkItemExchangeLeague()));
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     private void search() {
         showSearch(false);
         loading(true);
@@ -383,8 +413,6 @@ public class BulkItemExchangeFragment extends Fragment {
     }
 
 
-
-
     private void loading(final boolean loading) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -486,13 +514,24 @@ public class BulkItemExchangeFragment extends Fragment {
                             mListGroupCurrency = new ArrayList<CurrencyGroup>();
                             for (DataSnapshot child : snapshot.getChildren()) {
                                 addCurrency(child);
-
                             }
+
+                            for (int i = 0; i < mListGroupCurrency.size(); i++) {
+                                if (mListGroupCurrency.get(i).getGroupName().equalsIgnoreCase("Currency")) {
+                                    CurrencyGroup currencyBKP = mListGroupCurrency.get(i).getClone();
+                                    mListGroupCurrency.set(i, mListGroupCurrency.get(0).getClone());
+                                    mListGroupCurrency.set(0, currencyBKP.getClone());
+                                    break;
+                                }
+                            }
+
 
                             for (CurrencyGroup currencyGroup : mListGroupCurrency) {
                                 mListGroupCurrencyWhatYouHave.add(currencyGroup.getClone());
                                 mListGroupCurrencyWhatYouWant.add(currencyGroup.getClone());
+
                             }
+
 
                             dataBase.keepSynced(true);
 

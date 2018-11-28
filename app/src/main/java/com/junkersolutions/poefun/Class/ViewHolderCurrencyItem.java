@@ -44,7 +44,6 @@ public class ViewHolderCurrencyItem extends ChildViewHolder {
 
     public void bind(final int parentPosition, final int childPosition, @NonNull final Currency currency, final ExpandableRecyclerAdapterCurrency.OnClickItemListener onClickItemListener) {
         mTextViewCurrencyDescription.setText(currency.getDescription());
-
         if (currency.isSelected())
             mImageViewSelected.setVisibility(View.VISIBLE);
         else
@@ -69,13 +68,6 @@ public class ViewHolderCurrencyItem extends ChildViewHolder {
         mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if(currency.isSelected()) {
-                    mImageViewSelected.setVisibility(View.INVISIBLE);
-                }
-                else{
-                    mImageViewSelected.setVisibility(View.VISIBLE);
-                }*/
-
                 onClickItemListener.onClickItemListener(parentPosition, childPosition);
             }
         });

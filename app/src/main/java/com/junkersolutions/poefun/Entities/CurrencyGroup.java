@@ -1,13 +1,19 @@
 package com.junkersolutions.poefun.Entities;
 
+import android.widget.TextView;
+
 import com.bignerdranch.expandablerecyclerview.model.Parent;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CurrencyGroup implements Parent<Currency>, Cloneable {
     private String groupName;
+    private int selected;
     private List<Currency> currencyList;
+    private TextView textViewSelected;
 
 
     public CurrencyGroup(String groupName) {
@@ -35,6 +41,21 @@ public class CurrencyGroup implements Parent<Currency>, Cloneable {
         this.groupName = groupName;
     }
 
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
+    }
+
+    public TextView getTextViewSelected() {
+        return textViewSelected;
+    }
+
+    public void setTextViewSelected(TextView textViewSelected) {
+        this.textViewSelected = textViewSelected;
+    }
 
     @Override
     public List<Currency> getChildList() {

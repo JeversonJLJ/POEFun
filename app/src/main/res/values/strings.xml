@@ -67,4 +67,8 @@
     <string name="share">Share</string>
     <string name="close">Close</string>
     <string name="copied_successful">Copied Successful!</string>
+    <string name="copy">Copy</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="selected">Selected</string>
 </resources>
