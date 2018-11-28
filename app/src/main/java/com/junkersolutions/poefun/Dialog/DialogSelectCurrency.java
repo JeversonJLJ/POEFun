@@ -18,6 +18,7 @@ import com.junkersolutions.poefun.Entities.CurrencyGroup;
 import com.junkersolutions.poefun.Fragments.LeaderboardsFragment;
 import com.junkersolutions.poefun.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DialogSelectCurrency extends AppCompatDialog {
@@ -28,7 +29,8 @@ public class DialogSelectCurrency extends AppCompatDialog {
     private Button mButtonOK;
     private Button mButtonCancel;
     private Button mButtonClear;
-    private List<CurrencyGroup> currencyGroups;
+    private List<CurrencyGroup> mCurrencyGroups;
+
     private Activity activity;
 
 
@@ -38,7 +40,10 @@ public class DialogSelectCurrency extends AppCompatDialog {
         setCancelable(true);
         setCanceledOnTouchOutside(true);
         onSelectedCurrency = selectedCurrency;
-        this.currencyGroups = currencyGroups;
+        mCurrencyGroups = new ArrayList<CurrencyGroup>();
+        for (CurrencyGroup currencyGroup : currencyGroups) {
+            mCurrencyGroups.add(currencyGroup.getClone());
+        }
 
 
     }
@@ -56,7 +61,7 @@ public class DialogSelectCurrency extends AppCompatDialog {
             @Override
             public void onClick(View v) {
                 if (onSelectedCurrency != null)
-                    onSelectedCurrency.onSelectedCurrency(currencyGroups);
+                    onSelectedCurrency.onSelectedCurrency(mCurrencyGroups);
                 DialogSelectCurrency.this.dismiss();
             }
         });
@@ -71,7 +76,7 @@ public class DialogSelectCurrency extends AppCompatDialog {
         mButtonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (CurrencyGroup currencyGroup : currencyGroups) {
+                for (CurrencyGroup currencyGroup : mCurrencyGroups) {
                     for (Currency currency : currencyGroup.getCurrencyList()) {
                         currency.setSelected(false);
                     }
@@ -98,11 +103,11 @@ public class DialogSelectCurrency extends AppCompatDialog {
         //mRecyclerViewCurrencyGroups.setAdapter(recyclerAdapterSelectedCurrency);
 
 
-        mAdapter = new ExpandableRecyclerAdapterCurrency(activity, this.currencyGroups);
+        mAdapter = new ExpandableRecyclerAdapterCurrency(activity, this.mCurrencyGroups);
         mRecyclerViewCurrencyGroups.setAdapter(mAdapter);
 
         boolean haveSelected = false;
-        for (CurrencyGroup currencyGroup : currencyGroups) {
+        for (CurrencyGroup currencyGroup : mCurrencyGroups) {
             boolean selected = false;
             for (Currency currency : currencyGroup.getCurrencyList()) {
                 if (currency.isSelected()) {
@@ -117,7 +122,7 @@ public class DialogSelectCurrency extends AppCompatDialog {
         }
 
         if (!haveSelected) {
-            for (CurrencyGroup currencyGroup : currencyGroups) {
+            for (CurrencyGroup currencyGroup : mCurrencyGroups) {
                 if (currencyGroup.getGroupName().equalsIgnoreCase("Currency")) {
                     mAdapter.expandParent(currencyGroup);
                     break;
@@ -135,12 +140,12 @@ public class DialogSelectCurrency extends AppCompatDialog {
         mAdapter.setOnClickItemListener(new ExpandableRecyclerAdapterCurrency.OnClickItemListener() {
             @Override
             public void onClickItemListener(int groupPosition, int itemPosition) {
-                if (currencyGroups.get(groupPosition).getCurrencyList().get(itemPosition).isSelected()) {
-                    currencyGroups.get(groupPosition).getCurrencyList().get(itemPosition).setSelected(false);
+                if (mCurrencyGroups.get(groupPosition).getCurrencyList().get(itemPosition).isSelected()) {
+                    mCurrencyGroups.get(groupPosition).getCurrencyList().get(itemPosition).setSelected(false);
                 } else {
-                    currencyGroups.get(groupPosition).getCurrencyList().get(itemPosition).setSelected(true);
+                    mCurrencyGroups.get(groupPosition).getCurrencyList().get(itemPosition).setSelected(true);
                 }
-                ViewHolderCurrencyGroup.setSelected(currencyGroups.get(groupPosition), activity);
+                ViewHolderCurrencyGroup.setSelected(mCurrencyGroups.get(groupPosition), activity);
                 mAdapter.notifyChildChanged(groupPosition, itemPosition);
 
             }

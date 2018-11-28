@@ -173,6 +173,7 @@ public class BulkItemExchangeFragment extends Fragment {
                 DialogSelectCurrency.ShowCurrency(getActivity(), getString(R.string.what_you_have), mListGroupCurrencyWhatYouHave, new DialogSelectCurrency.OnSelectedCurrency() {
                     @Override
                     public void onSelectedCurrency(List<CurrencyGroup> currencyGroupsList) {
+                        mListGroupCurrencyWhatYouHave = currencyGroupsList;
                         setAdapterWhatYouHave(currencyGroupsList);
                     }
                 });
@@ -186,6 +187,7 @@ public class BulkItemExchangeFragment extends Fragment {
                 DialogSelectCurrency.ShowCurrency(getActivity(), getString(R.string.what_you_want), mListGroupCurrencyWhatYouWant, new DialogSelectCurrency.OnSelectedCurrency() {
                     @Override
                     public void onSelectedCurrency(List<CurrencyGroup> currencyGroupsList) {
+                        mListGroupCurrencyWhatYouWant = currencyGroupsList;
                         setAdapterWhatYouWant(currencyGroupsList);
                     }
                 });
